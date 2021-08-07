@@ -20,7 +20,7 @@ const Header = () => {
       <h1 className="ml-2 text-gray-700 text-2xl">Docs</h1>
 
       <div
-        className=" w:1/2  flex md:mx-20 mx-5  flex-grow items-center px-5 py-2 bg-gray-100
+        className="hidden sm:inline-flex   flex md:mx-20 mx-5  flex-grow items-center px-5 py-2 bg-gray-100
       text-gray-600
       rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
       >
