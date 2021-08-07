@@ -9,12 +9,32 @@ import Model from "@material-tailwind/react/Modal";
 import Modelbody from "@material-tailwind/react/ModalBody";
 import ModelFooter from "@material-tailwind/react/ModalFooter";
 import { useState } from "react";
+import { db } from "../firebase";
+import firebase from "firebase";
+import { useCollectionOnce } from "react-firebase-hooks/firestore";
+import DocumentRow from "../components/DocumentRow";
 export default function Home() {
   const [session] = useSession();
+  if (!session) return <Login />;
   const [showModel, setShowmodel] = useState(false);
   const [input, setInput] = useState("");
+  const [snapshot] = useCollectionOnce(
+    db
+      .collection("userDocs")
+      .doc(session.user.email)
+      .collection("docs")
+      .orderBy("timestamp", "desc")
+  );
 
-  if (!session) return <Login />;
+  const createDocument = () => {
+    if (!input) return;
+    db.collection("userDocs").doc(session.user.email).collection("docs").add({
+      fileName: input,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+    setInput("");
+    setShowmodel(false);
+  };
 
   const model = (
     <Model size="sm" active={showModel} toggler={() => setShowmodel(false)}>
@@ -25,6 +45,7 @@ export default function Home() {
           type="text"
           className="outline-none w-full"
           placeholder="Enter name of document"
+          onKeyDown={(e) => e.key === "Enter" && createDocument()}
         />
       </Modelbody>
       <ModelFooter>
@@ -36,7 +57,7 @@ export default function Home() {
         >
           Cancel
         </Button>
-        <Button color="blue" ripple="light">
+        <Button onClick={createDocument} color="blue" ripple="light">
           Create
         </Button>
       </ModelFooter>
@@ -92,6 +113,15 @@ export default function Home() {
             <p className="mr-12">Date Created</p>
             <Icon name="folder" size="3xl" color="gray" />
           </div>
+
+          {snapshot?.docs?.map((doc) => (
+            <DocumentRow
+              key={doc.id}
+              id={doc.id}
+              fileName={doc.data().fileName}
+              date={doc.data().timestamp}
+            />
+          ))}
         </div>
       </section>
     </div>

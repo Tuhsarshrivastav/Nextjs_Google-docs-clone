@@ -20,7 +20,7 @@ const Header = () => {
       <h1 className="ml-2 text-gray-700 text-2xl">Docs</h1>
 
       <div
-        className=" md:mx-20 mx-5 flex flex-grow items-center px-5 py-2 bg-gray-100
+        className=" w:1/2  flex md:mx-20 mx-5  flex-grow items-center px-5 py-2 bg-gray-100
       text-gray-600
       rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
       >
@@ -39,7 +39,7 @@ const Header = () => {
         rounded={true}
         iconOnly={true}
         ripple="dark"
-        className="hidden md:inline-flex ml-5 md:ml-20 h-20 w-20 border-0"
+        className=" md:inline-flex ml-5 md:ml-20 h-20 w-20 border-0"
       >
         <Icon name="apps" size="3xl" color="gray" />
       </Button>
